@@ -11,7 +11,7 @@ topics:
   - physics
   - ode
   - flutter-scene
-  - 3d
+  - simulation
 
 # DART PURO A PROPÓSITO. El plugin `flutter_scene_ode` (el pubspec de arriba) es quien
 # empaqueta el `.so`, el `.wasm` y las plataformas; este paquete es solo el

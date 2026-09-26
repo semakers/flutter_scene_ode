@@ -15,7 +15,7 @@ topics:
   - physics
   - ode
   - flutter-scene
-  - 3d
+  - simulation
   - ffi
 
 environment:
