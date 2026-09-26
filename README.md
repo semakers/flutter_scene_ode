@@ -143,4 +143,5 @@ ODE_LIBRARY_PATH=<that path> dart test    # 59 tests (and `flutter test` at the 
 ## License
 
 BSD 3-Clause, see [LICENSE](LICENSE). ODE is used and redistributed under its
-BSD-style license, see [LICENSE-ODE-BSD.txt](LICENSE-ODE-BSD.txt).
+BSD-style license, see [LICENSE-ODE-BSD.txt](LICENSE-ODE-BSD.txt) and
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).

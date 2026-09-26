@@ -26,12 +26,3 @@ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
 CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
--------------------------------------------------------------------------------
-
-Third-party code
-
-This package contains Dart bindings to the Open Dynamics Engine (ODE) 0.16.6.
-It does not bundle ODE itself; the flutter_scene_ode plugin does. ODE is
-Copyright (c) 2001-2007 Russell L. Smith and contributors, and is used here
-under its BSD-style license, reproduced in LICENSE-ODE-BSD.txt.
