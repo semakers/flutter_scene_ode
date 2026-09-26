@@ -1,0 +1,8 @@
+# UNO A LA VEZ. `dart test` corre cada fichero en su propio isolate, pero
+# todos los isolates viven en el MISMO proceso, y la biblioteca de ODE es una
+# sola con estado global (`dInitODE2`, los hilos falsos del stepper). Dos
+# bancos pisando ese estado a la vez acaban en «ODE INTERNAL ERROR 1:
+# assertion "false" failed in WaitWakeup()» y un volcado de memoria que no
+# menciona la concurrencia por ningún lado. Con `flutter test` no pasaba por
+# casualidad, no por diseño.
+concurrency: 1

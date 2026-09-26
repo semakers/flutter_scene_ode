@@ -1,0 +1,54 @@
+// `libode.so` NO se compila aquí: viaja precompilado en
+// android/src/main/jniLibs/arm64-v8a/ y el AGP lo empaqueta en el AAR.
+// La receta para reconstruirlo está en tool/build_ode.sh y NATIVE.md.
+
+group = "com.nairda.flutter_scene_ode"
+version = "1.0"
+
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        // 8.11.1 es el MÍNIMO que acepta flutter-3471
+        // (flutter_tools/gradle/src/main/kotlin/DependencyVersionChecker.kt).
+        // La plantilla trae 9.1.0 y Gradle 9 muere en esta caja con
+        // "The settings are not yet available for build".
+        classpath("com.android.tools.build:gradle:8.11.1")
+    }
+}
+
+rootProject.allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+apply plugin: "com.android.library"
+
+android {
+    namespace = "com.nairda.flutter_scene_ode"
+    compileSdk = 36
+
+    // Una sola fuente de verdad para la versión del NDK, compartida con
+    // tool/build_ode.sh (que la lee de gradle.properties).
+    ndkVersion = project.findProperty("flutterSceneOdeNdkVersion") ?: "27.0.12077973"
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    defaultConfig {
+        minSdk = 24
+        // Solo arm64-v8a: es lo que corre el Redmi 7 y el único ABI para el
+        // que existe el .so. Cualquier otro cae en el fallo blando de
+        // ode_library.dart (isAvailable == false) y ve la pantalla honesta.
+        ndk {
+            abiFilters += "arm64-v8a"
+        }
+    }
+}

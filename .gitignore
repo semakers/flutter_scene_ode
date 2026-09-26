@@ -1,0 +1,36 @@
+# Dart / Flutter
+.dart_tool/
+.packages
+build/
+pubspec.lock
+pubspec_overrides.yaml
+*.iml
+.idea/
+
+# Android
+local.properties
+.gradle/
+
+# Derivados de tool/ (la fuente es ffigen.template.yaml)
+ffigen.gen.yaml
+
+# Los BUILDS de ODE viven fuera del repo (por defecto en el disco externo, ver
+# tool/ode_env.sh) y se reproducen con tool/fetch_ode.sh + tool/build_ode.sh.
+#
+# OJO, esto cambió el 2026-08-28: las FUENTES sí están ahora en el repo, en
+# src/, y no se ignoran. No es una recaída, es la única salida: para iOS y
+# macOS no hay ninguna máquina del proyecto que pueda compilar (esta caja es
+# Linux ARM64 y el Mac no tiene Xcode), así que el pod compila las fuentes en
+# el runner de Apple y para eso tienen que viajar. tool/vendor_ode.sh las copia
+# del tarball con el sha256 verificado, y `tool/vendor_ode.sh --check` avisa si
+# divergieron. Android sigue como estaba: .so precompilado en jniLibs/.
+.ode-src/
+.ode-build/
+
+# OJO: jniLibs/ NO se ignora. `libode.so` viaja commiteado a propósito:
+# es lo que hace que la app se construya sin NDK ni qemu.
+
+# El núcleo puro (core/) tiene su propio pub; lo suyo se ignora igual.
+core/.dart_tool/
+core/pubspec.lock
+.ode-work/

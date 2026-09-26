@@ -1,0 +1,65 @@
+# LA LISTA CANÓNICA de defines con los que se compila ODE. Un define por línea.
+#
+# POR QUÉ EXISTE
+# --------------
+# El mismo árbol de ios/Classes lo compilan SEIS builders distintos (los dos
+# podspecs de Apple, windows/CMakeLists.txt, tool/build_vendored_host.sh,
+# tool/build_ode_wasm.sh y tool/build_ode.sh vía cmake). Cada uno los escribe
+# en su propia sintaxis y no pueden leerse entre sí: el podspec es Ruby que
+# CocoaPods evalúa en el runner y no puede salir del directorio del pod sin
+# romper `pod lib lint`.
+#
+# Así que no se comparte el fichero: se comparte la VERDAD, y un test la coteja
+# contra los seis (test/plugin_wiring_test.dart). Misma filosofía que el resto
+# de ese banco: no compila nada, solo cuida que las piezas sigan diciendo lo que
+# tienen que decir.
+#
+# Y la razón de fondo: un ODE distinto por plataforma es un bug que solo aparece
+# en la plataforma rara. Ya pasó con M_PI en Windows (ver NATIVE.md).
+
+[todos]
+
+# Inertes fuera de Windows (ODE_API sale vacío), pero se pasan igual: la lista
+# es UNA y se coteja. En MSVC dan __declspec(dllexport) y con ellos salieron
+# 639 símbolos sin hacer nada.
+ODE_DLL
+ODE_EXPORTS
+
+# PRECISIÓN SIMPLE. NO NEGOCIABLE: los bindings declaran dReal = ffi.Float y un
+# binario en doble precisión NO da error de enlace, LEE BASURA. La guardia en
+# caliente es assertOdeAbi() -> dCheckConfiguration('ODE_single_precision').
+dIDESINGLE
+
+dNODEBUG
+dOU_ENABLED
+dATOMICS_ENABLED
+dBUILTIN_THREADING_IMPL_ENABLED
+_OU_NAMESPACE=odeou
+_OU_FEATURE_SET=_OU_FEATURE_SET_ATOMICS
+
+# cmake lo pone en MinSizeRel y Xcode no lo pone en NINGUNA configuración. Sin
+# él, Apple compilaría un ODE distinto del de Android, con los OU_ASSERT vivos
+# llamando a abort().
+NDEBUG
+
+[solo-windows]
+
+# Sin esto <math.h> de MSVC no define M_PI y common.h:43 lo define él como
+# REAL(3.14159...) = FLOAT. No rompe el build: Windows correría una física
+# distinta y no se vería nunca.
+_USE_MATH_DEFINES
+NOMINMAX
+WIN32_LEAN_AND_MEAN
+_CRT_SECURE_NO_WARNINGS
+
+[solo-macos]
+
+MAC_OS_X_VERSION=1050
+
+[jamas]
+
+# _OU_TARGET_OS NO se fija a mano. ou/include/ou/platform.h lo autodetecta
+# (GENUNIX aquí y en wasm por __unix__, IOS o MAC en Apple, WINDOWS en MSVC) y
+# clavarlo es una forma de equivocarse de plataforma sin enterarse.
+_OU_TARGET_OS
+_OU_TARGET_ARCH

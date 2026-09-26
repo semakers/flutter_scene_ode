@@ -1,0 +1,7 @@
+name: ffigen_runner
+description: Runner de ffigen con el dart ARM64 nativo (el de flutter es x86_64/qemu).
+publish_to: none
+environment:
+  sdk: ^3.10.0
+dev_dependencies:
+  ffigen: ^20.0.0

@@ -1,0 +1,31 @@
+name: flutter_scene_ode_core
+description: >-
+  Pure-Dart core of flutter_scene_ode: the ODE (Open Dynamics Engine) physics
+  simulation, its FFI and WebAssembly bindings and the library loader. Runs
+  without Flutter, e.g. in a `dart compile exe` headless program.
+version: 0.1.0
+homepage: https://gitlab.com/amiba_proteus/flutter_scene_ode
+repository: https://gitlab.com/amiba_proteus/flutter_scene_ode/-/tree/main/core
+issue_tracker: https://gitlab.com/amiba_proteus/flutter_scene_ode/-/issues
+topics:
+  - physics
+  - ode
+  - flutter-scene
+  - 3d
+
+# DART PURO A PROPÓSITO. El plugin `flutter_scene_ode` (el pubspec de arriba) es quien
+# empaqueta el `.so`, el `.wasm` y las plataformas; este paquete es solo el
+# código, y se puede usar desde un programa sin pantalla. Lo único que había
+# aquí de Flutter era `rootBundle` para bajar el wasm, y eso ahora lo INYECTA
+# el plugin (`odeModuleLoader` en `ode_library_web.dart`).
+environment:
+  sdk: ^3.10.0
+
+dependencies:
+  scene: ">=0.2.0 <0.4.0"
+  ffi: ^2.1.3
+  vector_math: ^2.2.0
+
+dev_dependencies:
+  lints: ^6.0.0
+  test: ^1.25.0

@@ -1,0 +1,80 @@
+name: flutter_scene_ode
+description: >-
+  ODE (Open Dynamics Engine) physics backend for flutter_scene: rigid bodies,
+  hinge and fixed joints, motors, contacts and raycasts behind the
+  PhysicsSimulation contract of package:scene. Android, iOS, macOS, Windows
+  and web (WebAssembly).
+version: 0.1.0
+homepage: https://gitlab.com/amiba_proteus/flutter_scene_ode
+repository: https://gitlab.com/amiba_proteus/flutter_scene_ode
+issue_tracker: https://gitlab.com/amiba_proteus/flutter_scene_ode/-/issues
+topics:
+  - physics
+  - ode
+  - flutter-scene
+  - 3d
+  - ffi
+
+environment:
+  # ^3.10.0 como el resto del workspace, y no el ^3.13.1 que pone la plantilla:
+  # el Dart ARM64 nativo suelto (~/dev/dart-arm64) es el que corre
+  # analyze y los tests sin qemu, y con 3.13.1 no resolvía.
+  sdk: ^3.10.0
+  flutter: '>=3.3.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  # EL CÓDIGO. Vive en `core/` como paquete Dart puro; este plugin solo pone
+  # el binario y el bundle. En este repositorio lo resuelve pubspec_overrides.yaml a `core/`.
+  flutter_scene_ode_core: ^0.1.0
+  # El contrato PhysicsSimulation vive en `scene` (pub.dev), NO en el fork de
+  # flutter_scene: su barrel no re-exporta JointDesc/SimRaycastHit/Sim*Hit.
+  # Este paquete NO depende de flutter_scene a propósito — el backend es
+  # headless y así el fork queda limpio y mergeable con upstream.
+  scene: ">=0.2.0 <0.4.0"
+  ffi: ^2.1.3
+  vector_math: ^2.2.0
+
+dev_dependencies:
+  ffigen: ^20.1.1
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  # El módulo de WebAssembly, COMMITEADO igual que el libode.so de Android: web
+  # se comporta como Android y no como Apple/Windows —el binario viaja hecho— y
+  # así ninguna máquina que construya la app necesita emscripten.
+  #
+  # Se declaran como assets y NO se añade una plataforma `web:` al plugin,
+  # porque en web no hay nada que registrar: el .wasm es un fichero que se
+  # descarga cuando alguien abre un mecano. Por eso las plataformas de plugin
+  # siguen siendo cuatro, que es lo que cuenta test/plugin_wiring_test.dart.
+  # (Ese test cuenta apariciones de una cadena en este fichero, así que ni
+  # siquiera se puede citar aquí sin descuadrarlo: lo comprobé al descuadrarlo.)
+  assets:
+    - assets/ode.js
+    - assets/ode.wasm
+  plugin:
+    platforms:
+      android:
+        # ffiPlugin: los binarios nativos se empaquetan y no hay clase de
+        # plugin que registrar. NO hay externalNativeBuild: `libode.so` viaja
+        # precompilado en android/src/main/jniLibs/ (ver NATIVE.md).
+        ffiPlugin: true
+      # En Apple es al revés: no hay binario precompilado, el podspec COMPILA
+      # las fuentes de src/. No hay ninguna máquina del proyecto capaz de
+      # generar un .xcframework, así que el compilador es el de Xcode Cloud.
+      ios:
+        ffiPlugin: true
+      macos:
+        ffiPlugin: true
+      # Windows es como Apple: windows/CMakeLists.txt compila el MISMO árbol de
+      # ios/Classes con MSVC y Flutter copia la ode.dll resultante junto al
+      # .exe. Sin esta entrada el plugin ni aparece en el
+      # generated_plugins.cmake de la app, y el fallo es MUDO: la app arranca,
+      # la pestaña «Mecanos» está, y solo al abrir un mecano se ve la pantalla
+      # honesta.
+      windows:
+        ffiPlugin: true

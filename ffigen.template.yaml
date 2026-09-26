@@ -1,0 +1,157 @@
+# Plantilla de la configuración de ffigen. Las @RUTAS@ las sustituye
+# tool/gen_bindings.sh (que además corre el dart ARM64 nativo y deriva el
+# resource-dir de clang). NO editar ffigen.gen.yaml: es un archivo derivado.
+#
+# El -I del bindgen-include va PRIMERO: lleva el `ode/precision.h` mínimo con
+# dSINGLE que normalmente genera cmake dentro del build tree.
+name: OdeBindings
+description: >-
+  ODE 0.16.6, single precision, subconjunto para el backend OdeSimulation
+  (mundo, cuerpos, geoms primitivos, joints hinge/fixed/contact).
+output: @OUTPUT@
+headers:
+  entry-points:
+    - @ODE_SRC@/include/ode/ode.h
+compiler-opts:
+  - "-I@BINDGEN_INCLUDE@"
+  - "-I@ODE_SRC@/include"
+  # Los builtin de clang (stddef.h etc.): libclang solo no los encuentra.
+  - "-I@CLANG_INCLUDE@"
+functions:
+  include:
+    # init / mundo
+    - dInitODE2
+    - dCloseODE
+    # Guardia de ABI: los bindings tienen dReal = ffi.Float clavado y un .so en
+    # doble precisión NO daría error de enlace, leería basura.
+    - dGetConfiguration
+    - dCheckConfiguration
+    - dWorldCreate
+    - dWorldDestroy
+    - dWorldSetGravity
+    - dWorldSetERP
+    - dWorldSetCFM
+    - dWorldSetQuickStepNumIterations
+    - dWorldQuickStep
+    - dWorldSetAutoDisableFlag
+    - dWorldSetAutoDisableLinearThreshold
+    - dWorldSetAutoDisableAngularThreshold
+    - dWorldSetContactSurfaceLayer
+    - dWorldSetContactMaxCorrectingVel
+    # espacio / colisión
+    - dHashSpaceCreate
+    - dSpaceDestroy
+    - dSpaceCollide
+    - dCollide
+    - dCreateBox
+    - dCreateSphere
+    # El cilindro es la llanta del motor DC. cylinder-box y cylinder-plane son
+    # nativos en 0.16.6; cylinder-cylinder NO existe sin libccd (dos llantas se
+    # atravesarían en silencio). dCreateCapsule NO se incluye a propósito: sin
+    # libccd no hay capsule-cylinder, así que las cápsulas están prohibidas en
+    # el mecano y la regla vive en el tipo, no en un comentario.
+    - dCreateCylinder
+    - dGeomCylinderSetParams
+    - dGeomCylinderGetParams
+    - dCreatePlane
+    # ray (raycast del contrato de scene). dGeomRaySetClosestHit NO se incluye:
+    # en este build es un no-op absoluto — solo lo consulta el collider de
+    # trimesh (collision.h) y OPCODE/GIMPACT van OFF. El include de ffigen es
+    # full-match: cada símbolo se lista por separado.
+    - dCreateRay
+    - dGeomRaySet
+    - dGeomRaySetLength
+    - dGeomDestroy
+    - dGeomSetBody
+    - dGeomGetBody
+    - dGeomSetOffsetPosition
+    - dGeomSetOffsetQuaternion
+    - dGeomSetPosition
+    - dGeomSetQuaternion
+    # cuerpos
+    - dBodyCreate
+    - dBodyDestroy
+    - dBodySetPosition
+    - dBodySetQuaternion
+    - dBodyGetPosition
+    - dBodyGetQuaternion
+    - dBodySetLinearVel
+    - dBodyGetLinearVel
+    - dBodySetAngularVel
+    - dBodyGetAngularVel
+    - dBodySetLinearDamping
+    - dBodySetAngularDamping
+    - dBodySetGravityMode
+    - dBodyEnable
+    - dBodyDisable
+    - dBodyIsEnabled
+    - dBodySetKinematic
+    - dBodySetDynamic
+    - dBodyAddForce
+    - dBodyAddForceAtPos
+    - dBodyAddTorque
+    - dBodySetForce
+    - dBodySetTorque
+    - dBodySetMass
+    - dBodyGetMass
+    # masas
+    - dMassSetBoxTotal
+    - dMassSetSphereTotal
+    # El eje del cilindro en el frame del CUERPO no tiene por qué ser el del
+    # shape: dMassSetCylinderTotal escribe ½mr² en el eje que se le pide, en el
+    # frame en que se le pide, y hace falta dMassRotate para llevarlo al frame
+    # del cuerpo. Sin eso la llanta pierde el 39 % de su inercia sin un aviso.
+    - dMassSetCylinderTotal
+    - dMassRotate
+    - dMassAdjust
+    - dMassSetZero
+    # joints
+    - dAreConnectedExcluding
+    - dJointGroupCreate
+    - dJointGroupDestroy
+    - dJointGroupEmpty
+    - dJointCreateContact
+    - dJointCreateHinge
+    - dJointCreateFixed
+    - dJointDestroy
+    - dJointAttach
+    - dJointSetHingeAnchor
+    - dJointSetHingeAxis
+    - dJointSetHingeParam
+    - dJointGetHingeAngle
+    - dJointGetHingeAngleRate
+    # Las dos anclas que ODE MANTIENE (no las que se pidieron): su separación
+    # es violación del solver, y es la mitad B del gap= de la telemetría.
+    - dJointGetHingeAnchor
+    - dJointGetHingeAnchor2
+    - dJointSetFixed
+structs:
+  include:
+    - dMass
+    - dContact
+    - dContactGeom
+    - dSurfaceParameters
+  dependency-only: opaque
+enums:
+  include:
+    - ".*"
+macros:
+  include:
+    - "dContact.*"
+    - "dParam.*"
+typedefs:
+  include:
+    - dReal
+    - dNearCallback
+    - dVector3
+    - dVector4
+    - dMatrix3
+    - dQuaternion
+preamble: |
+  // GENERADO por ffigen (plantilla: ffigen.template.yaml, script:
+  // tool/gen_bindings.sh). No editar a mano.
+  // ODE 0.16.6, dSINGLE. Superficie: la que usa OdeSimulation.
+  // ignore_for_file: type=lint, unused_field, unused_element
+comments:
+  style: any
+  length: brief

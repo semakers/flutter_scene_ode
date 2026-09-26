@@ -1,0 +1,12 @@
+# Herramientas de build, banco y generación: viven en el repositorio.
+tool/
+test/
+ffigen_runner/
+ffigen.template.yaml
+ffigen.gen.yaml
+pubspec_overrides.yaml
+.ode-work/
+.ode-src/
+.ode-build/
+build/
+.dart_tool/
