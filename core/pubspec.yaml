@@ -4,9 +4,9 @@ description: >-
   simulation, its FFI and WebAssembly bindings and the library loader. Runs
   without Flutter, e.g. in a `dart compile exe` headless program.
 version: 0.1.0
-homepage: https://gitlab.com/amiba_proteus/flutter_scene_ode
-repository: https://gitlab.com/amiba_proteus/flutter_scene_ode/-/tree/main/core
-issue_tracker: https://gitlab.com/amiba_proteus/flutter_scene_ode/-/issues
+homepage: https://github.com/semakers/flutter_scene_ode
+repository: https://github.com/semakers/flutter_scene_ode/tree/main/core
+issue_tracker: https://github.com/semakers/flutter_scene_ode/issues
 topics:
   - physics
   - ode

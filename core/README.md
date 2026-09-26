@@ -27,7 +27,7 @@ ODE_LIBRARY_PATH=/path/to/libode.so dart run example/example.dart
 ```
 
 Units, supported features and known limits are documented in the
-[main README](https://gitlab.com/amiba_proteus/flutter_scene_ode).
+[main README](https://github.com/semakers/flutter_scene_ode).
 
 ## License
 

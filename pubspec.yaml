@@ -5,9 +5,9 @@ description: >-
   PhysicsSimulation contract of package:scene. Android, iOS, macOS, Windows
   and web (WebAssembly).
 version: 0.1.0
-homepage: https://gitlab.com/amiba_proteus/flutter_scene_ode
-repository: https://gitlab.com/amiba_proteus/flutter_scene_ode
-issue_tracker: https://gitlab.com/amiba_proteus/flutter_scene_ode/-/issues
+homepage: https://github.com/semakers/flutter_scene_ode
+repository: https://github.com/semakers/flutter_scene_ode
+issue_tracker: https://github.com/semakers/flutter_scene_ode/issues
 topics:
   - physics
   - ode

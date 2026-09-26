@@ -19,7 +19,7 @@ Pod::Spec.new do |s|
   s.name             = 'flutter_scene_ode'
   s.version          = '0.1.0'
   s.summary          = 'ODE (Open Dynamics Engine) physics backend for flutter_scene'
-  s.homepage         = 'https://gitlab.com/amiba_proteus/flutter_scene_ode'
+  s.homepage         = 'https://github.com/semakers/flutter_scene_ode'
   # Sin `:file`: la ruta con `..` hace fallar `pod lib lint`. La copia de la
   # licencia vive en LICENSE-ODE-BSD.txt, en la raíz del paquete.
   s.license          = { :type => 'BSD-3-Clause' }
