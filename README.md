@@ -7,16 +7,30 @@ implements the `PhysicsSimulation` contract of
 hinges, fixed joints, contacts with friction, sleeping bodies and raycasts.
 
 ODE has been used for two decades in robotics simulators. This backend was
-born inside [Nairda](https://nairda.com.mx), an educational robotics app,
-where it simulates the robots children build (servos, DC motors, wheels,
-bumpers) on Android, iOS, macOS, Windows and the web. The binaries shipped
-here are the same ones that run in that app.
+born inside Nairda, and the binaries shipped here are the same ones that run
+there.
 
 To our knowledge (September 2026) it is the first physics backend for
 flutter_scene written outside the flutter_scene project, and the first one
 based on ODE. The other backends are
 [flutter_scene_rapier](https://pub.dev/packages/flutter_scene_rapier) and
 [flutter_scene_box3d](https://pub.dev/packages/flutter_scene_box3d).
+
+![The example app: boxes, spheres and cylinders simulated by ODE and drawn by flutter_scene, on the web](https://raw.githubusercontent.com/semakers/flutter_scene_ode/main/doc/example.png)
+
+## Where it is used
+
+- **[Nairda](https://nairda.com.mx)** is an educational robotics app. ODE
+  simulates the robots children build, with servos, DC motors, wheels and
+  bumpers, on Android, iOS, macOS, Windows and the web. Nairda's virtual
+  robot contests also run this physics on a server, through the pure-Dart
+  core and without Flutter.
+- **Proteus** is an artificial-life experiment: an amoeba whose body is
+  simulated by ODE. A small decision model moves its pseudopods, and a
+  language model narrates its inner state as a "Cartesian theatre" that
+  steers the amoeba towards homeostasis. It uses the pure-Dart core for the
+  simulation and flutter_scene for its 3D viewer. It will be published as
+  open source too.
 
 *Documentación en español: [README.es.md](README.es.md).*
 
@@ -85,7 +99,12 @@ Future<void> main() async {
 }
 ```
 
-A runnable version is in [`core/example/example.dart`](core/example/example.dart).
+Two runnable examples:
+
+- [`example/`](example/) is a Flutter app: boxes, spheres and cylinders rain
+  onto a floor, through flutter_scene's `PhysicsWorld` component.
+- [`core/example/example.dart`](core/example/example.dart) is the same idea
+  in pure Dart, without Flutter.
 
 ## Units and tuning
 

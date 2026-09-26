@@ -8,6 +8,9 @@ version: 0.1.0
 homepage: https://github.com/semakers/flutter_scene_ode
 repository: https://github.com/semakers/flutter_scene_ode
 issue_tracker: https://github.com/semakers/flutter_scene_ode/issues
+screenshots:
+  - description: Boxes, spheres and cylinders simulated by ODE and drawn by flutter_scene, running on the web.
+    path: doc/example.png
 topics:
   - physics
   - ode

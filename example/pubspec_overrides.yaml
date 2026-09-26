@@ -1,0 +1,3 @@
+dependency_overrides:
+  flutter_scene_ode_core:
+    path: ../core

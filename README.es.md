@@ -1,11 +1,26 @@
 # flutter_scene_ode
 
 El backend de física de **ODE** (Open Dynamics Engine) detrás del contrato
-`PhysicsSimulation` de `package:scene`. Es lo que hace que el mecano de Nairda
-se caiga, choque y gire como si pesara.
+`PhysicsSimulation` de `package:scene`. Es lo que hace que los robots de Nairda
+se caigan, choquen y giren como si pesaran.
 
-No depende de `flutter_scene`: el backend es *headless*, y así el fork del
-motor gráfico queda limpio.
+No depende de `flutter_scene`: el backend es *headless* y se enchufa en el
+componente `PhysicsWorld` de flutter_scene, o se usa solo, sin gráficos.
+
+## Dónde se usa
+
+- **[Nairda](https://nairda.com.mx)**, la app de robótica educativa. ODE simula
+  los robots que arman los niños, con servos, motores DC, llantas y bumpers, en
+  Android, iOS, macOS, Windows y web. Los concursos virtuales de robots corren
+  esta misma física en el servidor, con el núcleo de Dart puro y sin Flutter.
+- **Proteus**, un experimento de vida artificial: una ameba cuyo cuerpo simula
+  ODE. Un modelo de decisión pequeño mueve sus pseudópodos, y un modelo de
+  lenguaje narra su estado interno como un «teatro cartesiano» que la lleva
+  hacia la homeostasis. Usa el núcleo de Dart puro para la simulación y
+  flutter_scene para su visor 3D. También se publicará como código abierto.
+
+Hay dos ejemplos: [`example/`](example/), una app de Flutter con flutter_scene,
+y [`core/example/example.dart`](core/example/example.dart), en Dart puro.
 
 ## Plataformas
 
@@ -19,10 +34,11 @@ motor gráfico queda limpio.
 
 **Nada revienta donde no hay ODE.** `openOdeLibrary()` devuelve `null` y guarda
 el motivo; `OdeSimulation.isAvailable` es la pregunta que hay que hacer antes de
-crear nada, y el mecano enseña su «pantalla honesta» en vez de caerse.
+crear nada, y la app puede enseñar un aviso en vez de caerse.
 
 En web la carga es ASÍNCRONA (hay que descargar e instanciar el módulo), así que
-antes de preguntar hay que esperar a **`OdeSimulation.ensureAvailable()`**. En
+antes de preguntar hay que esperar a **`FlutterSceneOde.ensureAvailable()`**
+(o a `OdeSimulation.ensureAvailable()` con el núcleo puro). En
 las plataformas nativas no espera a nada.
 
 Todo el porqué del código nativo —las banderas, las 75 unidades que se compilan,
