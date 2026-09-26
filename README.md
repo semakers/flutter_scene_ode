@@ -25,12 +25,13 @@ based on ODE. The other backends are
   bumpers, on Android, iOS, macOS, Windows and the web. Nairda's virtual
   robot contests also run this physics on a server, through the pure-Dart
   core and without Flutter.
-- **Proteus** is an artificial-life experiment: an amoeba whose body is
+- **[Proteus](https://github.com/semakers/proteus)** is an artificial-life experiment: an amoeba whose body is
   simulated by ODE. A small decision model moves its pseudopods, and a
   language model narrates its inner state as a "Cartesian theatre" that
   steers the amoeba towards homeostasis. It uses the pure-Dart core for the
-  simulation and flutter_scene for its 3D viewer. It will be published as
-  open source too.
+  simulation and flutter_scene for its 3D viewer. Code on
+  [GitHub](https://github.com/semakers/proteus), live demo at
+  https://proteus.nairda-back.com.
 
 *Documentación en español: [README.es.md](README.es.md).*
 

@@ -17,7 +17,9 @@ componente `PhysicsWorld` de flutter_scene, o se usa solo, sin gráficos.
   ODE. Un modelo de decisión pequeño mueve sus pseudópodos, y un modelo de
   lenguaje narra su estado interno como un «teatro cartesiano» que la lleva
   hacia la homeostasis. Usa el núcleo de Dart puro para la simulación y
-  flutter_scene para su visor 3D. También se publicará como código abierto.
+  flutter_scene para su visor 3D. El código está en
+  [GitHub](https://github.com/semakers/proteus) y la demo en vivo en
+  https://proteus.nairda-back.com.
 
 Hay dos ejemplos: [`example/`](example/), una app de Flutter con flutter_scene,
 y [`core/example/example.dart`](core/example/example.dart), en Dart puro.
